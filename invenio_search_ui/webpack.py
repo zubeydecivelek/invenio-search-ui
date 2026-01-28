@@ -47,6 +47,9 @@ search_ui = WebpackThemeBundle(
                 "i18next": "^20.3.0",
                 "i18next-browser-languagedetector": "^6.1.0",
                 "react-i18next": "^11.11.0",
+                "@visx/scale": "^3.12.0",
+                "@visx/shape": "^3.12.0",
+                "@visx/responsive": "^3.12.0",
             },
             aliases={
                 "@js/invenio_search_ui": "js/invenio_search_ui",

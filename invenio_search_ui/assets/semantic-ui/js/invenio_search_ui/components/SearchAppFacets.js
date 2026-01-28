@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { BucketAggregation, buildUID } from "react-searchkit";
+import { BucketAggregation, RangeFacet, buildUID } from "react-searchkit";
 import Overridable from "react-overridable";
 
 export const SearchAppFacets = ({ aggs, appName }) => {
@@ -19,9 +19,22 @@ export const SearchAppFacets = ({ aggs, appName }) => {
       appName={appName}
     >
       <>
-        {aggs.map((agg) => (
-          <BucketAggregation key={agg.title} title={agg.title} agg={agg.agg} />
-        ))}
+        {aggs.map((agg) =>
+          agg.type === "date" ? (
+            <RangeFacet
+              key={agg.title}
+              title={agg.title}
+              agg={agg}
+              rangeSeparator={agg.separator || ".."}
+            />
+          ) : (
+            <BucketAggregation
+              key={agg.title}
+              title={agg.title}
+              agg={agg.agg}
+            />
+          ),
+        )}
       </>
     </Overridable>
   );

@@ -16,7 +16,12 @@ import {
 } from "semantic-ui-react";
 import Overridable from "react-overridable";
 import PropTypes from "prop-types";
-import { BucketAggregation, Toggle, buildUID } from "react-searchkit";
+import {
+  BucketAggregation,
+  Toggle,
+  buildUID,
+  RangeFacet,
+} from "react-searchkit";
 
 export const ContribSearchAppFacets = ({ aggs, toggle, help, appName }) => {
   return (
@@ -32,7 +37,24 @@ export const ContribSearchAppFacets = ({ aggs, toggle, help, appName }) => {
       {aggs.map((agg) => {
         return (
           <div className="facet-container" key={agg.title}>
-            <BucketAggregation title={agg.title} agg={agg} />
+            {agg.type === "date" ? (
+              <RangeFacet
+                title={agg.title}
+                agg={agg}
+                rangeSeparator={agg.separator || ".."}
+                defaultRanges={[
+                  { label: i18next.t("Last 1 year"), type: "years", value: 1 },
+                  { label: i18next.t("Last 5 years"), type: "years", value: 5 },
+                  { label: i18next.t("Last 6 months"), type: "months", value: 6 },
+                ]}
+                enableCustomRange={true}
+                dateRangeToLabel={i18next.t("to")}
+                customDatesLabel={i18next.t("Custom Dates")}
+                datePlaceholders={{ YYYY: i18next.t("YYYY"), MM: i18next.t("MM"), DD: i18next.t("DD") }}
+              />
+            ) : (
+              <BucketAggregation title={agg.title} agg={agg} />
+            )}
           </div>
         );
       })}
@@ -268,5 +290,49 @@ ContribBucketAggregationElement.propTypes = {
 };
 
 ContribBucketAggregationElement.defaultProps = {
+  containerCmp: null,
+};
+
+export const ContribRangeFacetElement = ({
+  title,
+  containerCmp,
+  hasActiveFilter,
+  onClear,
+}) => {
+  return (
+    <Card className="borderless facet">
+      <Card.Content>
+        <Card.Header as="h2">
+          {title}
+
+          {hasActiveFilter && (
+            <Button
+              basic
+              icon
+              size="mini"
+              floated="right"
+              onClick={onClear}
+              aria-label={i18next.t("Clear selection")}
+              title={i18next.t("Clear selection")}
+            >
+              {i18next.t("Clear")}
+            </Button>
+          )}
+        </Card.Header>
+
+        {containerCmp}
+      </Card.Content>
+    </Card>
+  );
+};
+
+ContribRangeFacetElement.propTypes = {
+  title: PropTypes.string.isRequired,
+  containerCmp: PropTypes.node,
+  hasActiveFilter: PropTypes.bool.isRequired,
+  onClear: PropTypes.func.isRequired,
+};
+
+ContribRangeFacetElement.defaultProps = {
   containerCmp: null,
 };
