@@ -25,4 +25,5 @@ export {
   ContribSearchAppFacets,
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
+  ContribRangeFacetElement,
 } from "./common/facets";
