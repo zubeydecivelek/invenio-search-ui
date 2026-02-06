@@ -28,11 +28,7 @@ export const SearchAppFacets = ({ aggs, appName }) => {
               rangeSeparator={agg.separator || ".."}
             />
           ) : (
-            <BucketAggregation
-              key={agg.title}
-              title={agg.title}
-              agg={agg.agg}
-            />
+            <BucketAggregation key={agg.title} title={agg.title} agg={agg} />
           ),
         )}
       </>
